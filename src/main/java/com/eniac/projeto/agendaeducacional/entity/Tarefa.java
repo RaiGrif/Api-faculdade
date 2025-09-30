@@ -1,3 +1,15 @@
+package com.eniac.projeto.agendaeducacional.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Column;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tarefa")
 public class Tarefa {
@@ -70,3 +82,4 @@ public class Tarefa {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+}
