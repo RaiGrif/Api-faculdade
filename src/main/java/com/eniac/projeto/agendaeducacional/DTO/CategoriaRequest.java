@@ -1,4 +1,4 @@
-package DTO;
+package com.eniac.projeto.agendaeducacional.DTO;
 
 public class CategoriaRequest {
     private Long id;

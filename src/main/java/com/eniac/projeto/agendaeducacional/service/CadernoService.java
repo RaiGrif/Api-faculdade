@@ -13,7 +13,7 @@ import com.eniac.projeto.agendaeducacional.entity.StatusCaderno;
 import com.eniac.projeto.agendaeducacional.repository.CadernoRepository;
 import com.eniac.projeto.agendaeducacional.repository.CategoriaRepository;
 
-import DTO.CategoriaRequest;
+import com.eniac.projeto.agendaeducacional.DTO.CategoriaRequest;
 
 @Service
 public class CadernoService {
@@ -71,12 +71,16 @@ public class CadernoService {
         return cadernoRepository.findAll(sort);
     }
 
-    public List<Caderno> list(StatusCaderno statusCaderno, String sortBy, String direction) {
+    public List<Caderno> list(StatusCaderno statusCaderno, String sortBy, String direction, String nome_categoria) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
         Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
 
         if (statusCaderno != null) {
             return cadernoRepository.findByStatus_caderno(statusCaderno, sort);
+        }
+
+        if (nome_categoria != null) {
+            return cadernoRepository.findByCategoriasNome_categoria(nome_categoria);
         }
 
         return cadernoRepository.findAll(sort);

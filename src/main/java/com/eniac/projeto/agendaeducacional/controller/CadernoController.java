@@ -14,7 +14,7 @@ import com.eniac.projeto.agendaeducacional.entity.Caderno;
 import com.eniac.projeto.agendaeducacional.entity.StatusCaderno;
 import com.eniac.projeto.agendaeducacional.service.CadernoService;
 
-import DTO.CategoriaRequest;
+import com.eniac.projeto.agendaeducacional.DTO.CategoriaRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,8 +33,8 @@ public class CadernoController {
     }
 
     @GetMapping
-    List<Caderno> listarCadernos(@RequestParam(required = false) StatusCaderno statusCaderno, @RequestParam(defaultValue = "titulo") String sortBy, @RequestParam(defaultValue = "asc") String direction) {
-        return cadernoService.list(statusCaderno, sortBy, direction);
+    List<Caderno> listarCadernos(@RequestParam(required = false) StatusCaderno statusCaderno, @RequestParam(defaultValue = "titulo") String sortBy, @RequestParam(defaultValue = "asc") String direction, @RequestParam(required = false) String nome_categoria) {
+        return cadernoService.list(statusCaderno, sortBy, direction, nome_categoria);
     }
 
     @GetMapping("/{id}")
