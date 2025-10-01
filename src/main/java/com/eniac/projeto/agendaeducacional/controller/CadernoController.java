@@ -33,7 +33,7 @@ public class CadernoController {
     }
 
     @GetMapping
-    List<Caderno> listarCadernos(@RequestParam(required = false) StatusCaderno statusCaderno, @RequestParam(defaultValue = "titulo") String sortBy, @RequestParam(defaultValue = "asc") String direction, @RequestParam(required = false) String nome_categoria) {
+    List<Caderno> listarCadernos(@RequestParam(required = false) StatusCaderno statusCaderno, @RequestParam(defaultValue = "titulo") List<String> sortBy, @RequestParam(defaultValue = "asc") String direction, @RequestParam(required = false) String nome_categoria) {
         return cadernoService.list(statusCaderno, sortBy, direction, nome_categoria);
     }
 

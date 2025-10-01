@@ -71,16 +71,25 @@ public class CadernoService {
         return cadernoRepository.findAll(sort);
     }
 
-    public List<Caderno> list(StatusCaderno statusCaderno, String sortBy, String direction, String nome_categoria) {
-        Sort sort = direction.equalsIgnoreCase("desc") ?
-        Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+    public List<Caderno> list(StatusCaderno statusCaderno, List<String> sortBy, String direction, String nome_categoria) {
+        Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        if (sortBy == null || sortBy.isEmpty()) {
+            sortBy = List.of("data_criacao_caderno");
+        }
+
+        Sort sort = Sort.by(dir, sortBy.toArray(new String[0]));
+
+        if (statusCaderno != null && nome_categoria != null) {
+            return cadernoRepository.findByStatus_cadernoAndCategoriasNome_categoria(statusCaderno, nome_categoria, sort);
+        }
 
         if (statusCaderno != null) {
             return cadernoRepository.findByStatus_caderno(statusCaderno, sort);
         }
 
         if (nome_categoria != null) {
-            return cadernoRepository.findByCategoriasNome_categoria(nome_categoria);
+            return cadernoRepository.findByCategoriasNome_categoria(nome_categoria, sort );
         }
 
         return cadernoRepository.findAll(sort);
