@@ -1,6 +1,6 @@
 package com.eniac.projeto.agendaeducacional.entity;
 
-public enum statusCaderno {
+public enum StatusCaderno {
     RASCUNHO,
     FINALIZADO
 }
