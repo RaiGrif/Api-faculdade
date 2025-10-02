@@ -22,7 +22,7 @@ public class Categoria {
     private Long id_categoria;
 
     @Column(name = "nome_categoria", nullable = false)
-    private String nome_categoria;
+    private String nomeCategoria;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -40,7 +40,7 @@ public class Categoria {
     public Categoria () {}
 
     public Categoria (String nome_categoria_) {
-        this.nome_categoria = nome_categoria_;
+        this.nomeCategoria = nome_categoria_;
     }
 
     public List<Caderno> getCadernos() {
@@ -60,11 +60,11 @@ public class Categoria {
     }
 
     public String getNome_categoria() {
-        return nome_categoria;
+        return nomeCategoria;
     }
 
     public void setNome_categoria(String nome_categoria) {
-        this.nome_categoria = nome_categoria;
+        this.nomeCategoria = nome_categoria;
     }
 
     public Usuario getId_Usuario() {

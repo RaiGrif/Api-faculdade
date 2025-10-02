@@ -33,8 +33,24 @@ public class CadernoController {
     }
 
     @GetMapping
-    List<Caderno> listarCadernos(@RequestParam(required = false) StatusCaderno statusCaderno, @RequestParam(defaultValue = "titulo") List<String> sortBy, @RequestParam(defaultValue = "asc") String direction, @RequestParam(required = false) String nome_categoria) {
-        return cadernoService.list(statusCaderno, sortBy, direction, nome_categoria);
+    List<Caderno> listarCadernos(@RequestParam(name="statusCaderno",required = false) String statusCaderno, @RequestParam(required = false, name = "sortBy") List<String> sortBy, @RequestParam(defaultValue = "asc", name = "direction") String direction, @RequestParam(required = false, name="nomeCategoria") String nomeCategoria) {
+        
+        System.out.println("statusCaderno = " + statusCaderno);
+        System.out.println("sortBy = " + sortBy);
+        System.out.println("direction = " + direction);
+        System.out.println("nomeCategoria = " + nomeCategoria);
+
+        String sortDirection = direction.equalsIgnoreCase("desc") ? "desc" : "asc";
+        
+        StatusCaderno statusEnum = null;
+    if (statusCaderno != null) {
+        try {
+            statusEnum = StatusCaderno.valueOf(statusCaderno.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            // opcional: lançar exceção personalizada ou ignorar
+        }
+    }   
+        return cadernoService.list(statusEnum, sortBy, sortDirection, nomeCategoria);
     }
 
     @GetMapping("/{id}")
@@ -45,7 +61,7 @@ public class CadernoController {
 
     @PostMapping
     public Caderno create (@RequestBody Caderno caderno) {
-        return cadernoService.create(caderno);
+        return cadernoService.create(caderno, caderno.getId_usuario().getId());
     }
 
     @PutMapping("/{id}")
@@ -53,7 +69,7 @@ public class CadernoController {
         return cadernoService.update(caderno);
     }
 
-    @PutMapping("/{idCaderno/categorias}")
+    @PutMapping("/{idCaderno}/categorias")
     public ResponseEntity<Caderno> updateCategorias(@PathVariable("idCaderno") Long id_caderno, @RequestBody List<CategoriaRequest> categoriasRequest) {
         return cadernoService.atualizarCategorias(id_caderno, categoriasRequest);
     }

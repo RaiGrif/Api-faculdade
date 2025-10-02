@@ -10,24 +10,28 @@ import org.springframework.stereotype.Service;
 import com.eniac.projeto.agendaeducacional.entity.Caderno;
 import com.eniac.projeto.agendaeducacional.entity.Categoria;
 import com.eniac.projeto.agendaeducacional.entity.StatusCaderno;
+import com.eniac.projeto.agendaeducacional.entity.Usuario;
 import com.eniac.projeto.agendaeducacional.repository.CadernoRepository;
 import com.eniac.projeto.agendaeducacional.repository.CategoriaRepository;
-
+import com.eniac.projeto.agendaeducacional.repository.UsuarioRepository;
 import com.eniac.projeto.agendaeducacional.DTO.CategoriaRequest;
 
 @Service
 public class CadernoService {
     private CadernoRepository cadernoRepository;
     private CategoriaRepository categoriaRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public CadernoService (CadernoRepository cadernoRepository_, CategoriaRepository categoriaRepository_) {
+    public CadernoService (CadernoRepository cadernoRepository_, CategoriaRepository categoriaRepository_, UsuarioRepository usuarioRepository_) {
         this.cadernoRepository = cadernoRepository_;
         this.categoriaRepository = categoriaRepository_;
+        this.usuarioRepository = usuarioRepository_;
     }
 
-    public Caderno create(Caderno caderno) {
-        cadernoRepository.save(caderno);
-        return buscarPorId (caderno.getId_caderno());
+    public Caderno create(Caderno caderno, Long id_usuario) {
+        Usuario usuario = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrao"));
+        caderno.setId_usuario(usuario);
+        return cadernoRepository.save(caderno);
     }
 
     public String update(Caderno caderno) {
@@ -72,24 +76,25 @@ public class CadernoService {
     }
 
     public List<Caderno> list(StatusCaderno statusCaderno, List<String> sortBy, String direction, String nome_categoria) {
+
         Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         if (sortBy == null || sortBy.isEmpty()) {
-            sortBy = List.of("data_criacao_caderno");
+            sortBy = List.of("dataCriacaoCaderno");
         }
 
         Sort sort = Sort.by(dir, sortBy.toArray(new String[0]));
 
         if (statusCaderno != null && nome_categoria != null) {
-            return cadernoRepository.findByStatus_cadernoAndCategoriasNome_categoria(statusCaderno, nome_categoria, sort);
+            return cadernoRepository.findByStatusCadernoAndCategoriasNomeCategoria(statusCaderno, nome_categoria, sort);
         }
 
         if (statusCaderno != null) {
-            return cadernoRepository.findByStatus_caderno(statusCaderno, sort);
+            return cadernoRepository.findByStatusCaderno(statusCaderno, sort);
         }
 
         if (nome_categoria != null) {
-            return cadernoRepository.findByCategoriasNome_categoria(nome_categoria, sort );
+            return cadernoRepository.findByCategoriasNomeCategoria(nome_categoria, sort );
         }
 
         return cadernoRepository.findAll(sort);

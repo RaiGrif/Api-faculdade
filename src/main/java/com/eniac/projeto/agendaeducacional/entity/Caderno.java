@@ -13,8 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,23 +29,37 @@ public class Caderno {
 
     @Column(nullable = false)
     private String titulo_caderno;
-
+    
+    @Lob
     @Column(name = "conteudo")
     private String conteudo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_caderno")
-    private StatusCaderno status_caderno;
+    private StatusCaderno statusCaderno;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "id", nullable = false)
     private Usuario id_usuario;
 
     @Column(name = "data_criacao_caderno", nullable = false)
-    private LocalDateTime data_criacao_caderno;
+    private LocalDateTime dataCriacaoCaderno;
+
+    @PrePersist
+    public void PrePersist() {
+        if (dataCriacaoCaderno == null){
+            dataCriacaoCaderno = LocalDateTime.now();
+        }
+        ultima_atualizacao = LocalDateTime.now();
+    }
 
     @Column(name = "ultima_atualizacao", nullable = false)
     private LocalDateTime ultima_atualizacao;
+
+    @PreUpdate
+    public void PreUpdate() {
+        ultima_atualizacao = LocalDateTime.now();
+    }
 
     @ManyToMany
     @JoinTable(
@@ -85,11 +102,11 @@ public class Caderno {
     }
 
     public StatusCaderno getStatus_caderno() {
-        return status_caderno;
+        return statusCaderno;
     }
 
     public void setStatus_caderno(StatusCaderno status_caderno) {
-        this.status_caderno = status_caderno;
+        this.statusCaderno = status_caderno;
     }
 
     public Usuario getId_usuario() {
@@ -101,11 +118,11 @@ public class Caderno {
     }
 
     public LocalDateTime getData_criacao_caderno() {
-        return data_criacao_caderno;
+        return dataCriacaoCaderno;
     }
 
     public void setData_criacao_caderno(LocalDateTime data_criacao_caderno) {
-        this.data_criacao_caderno = data_criacao_caderno;
+        this.dataCriacaoCaderno = data_criacao_caderno;
     }
 
     public LocalDateTime getUltima_atualizacao() {

@@ -10,7 +10,7 @@ import com.eniac.projeto.agendaeducacional.entity.StatusCaderno;
 
 
 public interface CadernoRepository extends JpaRepository<Caderno, Long> {
-    List<Caderno> findByStatus_caderno(StatusCaderno status_caderno, Sort sort);
-    List<Caderno> findByCategoriasNome_categoria(String nome_categoria, Sort sort);
-    List<Caderno> findByStatus_cadernoAndCategoriasNome_categoria(StatusCaderno status_caderno, String nome_categoria, Sort sort);
+    List<Caderno> findByStatusCaderno(StatusCaderno statusCaderno, Sort sort);
+    List<Caderno> findByCategoriasNomeCategoria(String nomeCategoria, Sort sort);
+    List<Caderno> findByStatusCadernoAndCategoriasNomeCategoria(StatusCaderno statusCaderno, String nomeCategoria, Sort sort);
 }
