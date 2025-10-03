@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eniac.projeto.agendaeducacional.entity.Caderno;
 import com.eniac.projeto.agendaeducacional.entity.StatusCaderno;
 import com.eniac.projeto.agendaeducacional.service.CadernoService;
-
+import com.eniac.projeto.agendaeducacional.DTO.CadernoDTO;
+import com.eniac.projeto.agendaeducacional.DTO.CadernoDetalheDto;
 import com.eniac.projeto.agendaeducacional.DTO.CategoriaRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +34,8 @@ public class CadernoController {
     }
 
     @GetMapping
-    List<Caderno> listarCadernos(@RequestParam(name="statusCaderno",required = false) String statusCaderno, @RequestParam(required = false, name = "sortBy") List<String> sortBy, @RequestParam(defaultValue = "asc", name = "direction") String direction, @RequestParam(required = false, name="nomeCategoria") String nomeCategoria) {
+    List<CadernoDTO> listarCadernos(@RequestParam(name="statusCaderno",required = false) String statusCaderno, @RequestParam(required = false, name = "sortBy") List<String> sortBy, @RequestParam(defaultValue = "asc", name = "direction") String direction, @RequestParam(required = false, name="nomeCategoria") String nomeCategoria) {
         
-        System.out.println("statusCaderno = " + statusCaderno);
-        System.out.println("sortBy = " + sortBy);
-        System.out.println("direction = " + direction);
-        System.out.println("nomeCategoria = " + nomeCategoria);
-
         String sortDirection = direction.equalsIgnoreCase("desc") ? "desc" : "asc";
         
         StatusCaderno statusEnum = null;
@@ -54,19 +50,19 @@ public class CadernoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Caderno> buscarPorId (@PathVariable Long id) {
-        Caderno caderno = cadernoService.buscarPorId(id);
-        return ResponseEntity.ok(caderno);
+    public ResponseEntity<CadernoDetalheDto> buscarPorId (@PathVariable("id") Long id) {
+        return cadernoService.buscarPorId(id).map(caderno -> ResponseEntity.ok(new CadernoDetalheDto(caderno)))
+        .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Caderno create (@RequestBody Caderno caderno) {
-        return cadernoService.create(caderno, caderno.getId_usuario().getId());
+        return cadernoService.create(caderno, caderno.getUsuario().getId());
     }
 
     @PutMapping("/{id}")
-    public String update (@PathVariable Caderno caderno) {
-        return cadernoService.update(caderno);
+    public String update (@PathVariable("id") Long id_caderno, @RequestBody Caderno caderno)   {
+        return cadernoService.update(caderno, id_caderno);
     }
 
     @PutMapping("/{idCaderno}/categorias")

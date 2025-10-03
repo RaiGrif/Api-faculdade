@@ -30,8 +30,7 @@ public class Caderno {
     @Column(nullable = false)
     private String titulo_caderno;
     
-    @Lob
-    @Column(name = "conteudo")
+    @Column(name = "conteudo", columnDefinition = "TEXT")
     private String conteudo;
 
     @Enumerated(EnumType.STRING)
@@ -39,8 +38,8 @@ public class Caderno {
     private StatusCaderno statusCaderno;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
-    private Usuario id_usuario;
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     @Column(name = "data_criacao_caderno", nullable = false)
     private LocalDateTime dataCriacaoCaderno;
@@ -109,12 +108,12 @@ public class Caderno {
         this.statusCaderno = status_caderno;
     }
 
-    public Usuario getId_usuario() {
-        return id_usuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setId_usuario(Usuario id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setUsuario(Usuario id_usuario) {
+        this.usuario = id_usuario;
     }
 
     public LocalDateTime getData_criacao_caderno() {

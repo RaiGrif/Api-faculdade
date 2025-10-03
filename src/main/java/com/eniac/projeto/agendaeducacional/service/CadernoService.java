@@ -2,6 +2,7 @@ package com.eniac.projeto.agendaeducacional.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,10 @@ import com.eniac.projeto.agendaeducacional.entity.Usuario;
 import com.eniac.projeto.agendaeducacional.repository.CadernoRepository;
 import com.eniac.projeto.agendaeducacional.repository.CategoriaRepository;
 import com.eniac.projeto.agendaeducacional.repository.UsuarioRepository;
+
+import jakarta.transaction.Transactional;
+
+import com.eniac.projeto.agendaeducacional.DTO.CadernoDTO;
 import com.eniac.projeto.agendaeducacional.DTO.CategoriaRequest;
 
 @Service
@@ -30,17 +35,27 @@ public class CadernoService {
 
     public Caderno create(Caderno caderno, Long id_usuario) {
         Usuario usuario = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrao"));
-        caderno.setId_usuario(usuario);
+        caderno.setUsuario(usuario);
         return cadernoRepository.save(caderno);
     }
 
-    public String update(Caderno caderno) {
-        try{
-        cadernoRepository.save(caderno);
+    public String update(Caderno caderno, Long id_caderno) {
+        try {
+        Caderno cadernoExistente = cadernoRepository.findById(id_caderno)
+            .orElseThrow(() -> new RuntimeException("Caderno não encontrado"));
+
+        // Atualiza apenas os campos que podem mudar
+        cadernoExistente.setTitulo_caderno(caderno.getTitulo_caderno());
+        cadernoExistente.setConteudo(caderno.getConteudo());
+        cadernoExistente.setStatus_caderno(caderno.getStatus_caderno());
+        
+
+        cadernoRepository.save(cadernoExistente);
         return "O caderno foi salvo com sucesso";
-        } catch (Exception erro) {
-            return "O caderno não foi salvo com sucesso";
-        }
+    } catch (Exception e) {
+        e.printStackTrace(); // 
+        return "O caderno não foi salvo com sucesso";
+    }
     }
 
     public ResponseEntity<Caderno> atualizarCategorias(Long id, List<CategoriaRequest> categoriasRequest) {
@@ -66,8 +81,8 @@ public class CadernoService {
         return ResponseEntity.ok(atualizado);
     }
 
-    public Caderno buscarPorId(Long id) {
-        return cadernoRepository.findById(id).orElseThrow(() -> new RuntimeException("Caderno não encontrado com ID:" + id));
+    public Optional<Caderno> buscarPorId(Long id) {
+        return cadernoRepository.findById(id);
     }
 
     public List<Caderno> list() {
@@ -75,7 +90,7 @@ public class CadernoService {
         return cadernoRepository.findAll(sort);
     }
 
-    public List<Caderno> list(StatusCaderno statusCaderno, List<String> sortBy, String direction, String nome_categoria) {
+    public List<CadernoDTO> list(StatusCaderno statusCaderno, List<String> sortBy, String direction, String nome_categoria) {
 
         Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -84,20 +99,20 @@ public class CadernoService {
         }
 
         Sort sort = Sort.by(dir, sortBy.toArray(new String[0]));
+        
+        List<Caderno> cadernos;
 
         if (statusCaderno != null && nome_categoria != null) {
-            return cadernoRepository.findByStatusCadernoAndCategoriasNomeCategoria(statusCaderno, nome_categoria, sort);
+            cadernos = cadernoRepository.findByStatusCadernoAndCategoriasNomeCategoria(statusCaderno, nome_categoria, sort);
+        } else if (statusCaderno != null) {
+            cadernos = cadernoRepository.findByStatusCaderno(statusCaderno, sort);
+        } else if (nome_categoria != null) {
+            cadernos = cadernoRepository.findByCategoriasNomeCategoria(nome_categoria, sort );
+        } else {
+            cadernos = cadernoRepository.findAll(sort);
         }
 
-        if (statusCaderno != null) {
-            return cadernoRepository.findByStatusCaderno(statusCaderno, sort);
-        }
-
-        if (nome_categoria != null) {
-            return cadernoRepository.findByCategoriasNomeCategoria(nome_categoria, sort );
-        }
-
-        return cadernoRepository.findAll(sort);
+        return cadernos.stream().map(CadernoDTO::new).toList();
     }
 
     public String deleteById(Long id) {
