@@ -27,8 +27,8 @@ public class Caderno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_caderno;
 
-    @Column(nullable = false)
-    private String titulo_caderno;
+    @Column(name = "titulo_caderno",nullable = false)
+    private String tituloCaderno;
     
     @Column(name = "conteudo", columnDefinition = "TEXT")
     private String conteudo;
@@ -85,11 +85,11 @@ public class Caderno {
     }
 
     public String getTitulo_caderno() {
-        return titulo_caderno;
+        return tituloCaderno;
     }
 
     public void setTitulo_caderno(String titulo_caderno) {
-        this.titulo_caderno = titulo_caderno;
+        this.tituloCaderno = titulo_caderno;
     }
 
     public String getConteudo() {
