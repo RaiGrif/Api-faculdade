@@ -1,6 +1,8 @@
 package com.eniac.projeto.agendaeducacional.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -15,12 +17,12 @@ import java.time.LocalDateTime;
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_tarefa;
 
-    @Column(nullable = false)
-    private String titulo;
+    @Column(name = "tituloTarefa",nullable = false)
+    private String tituloTarefa;
 
-    @Column(length = 1000)
+    @Column(name = "descricao",length = 1000)
     private String descricao;
 
     @Column(name = "data_criacao", nullable = false)
@@ -29,26 +31,40 @@ public class Tarefa {
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusTarefa statusTarefa;
+
+    @Column(nullable = false)
+    private int prioridade;
+
+    @Column(name = "data_vencimento")
+    private LocalDateTime dataVencimento;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     // Getters and Setters
 
-    public Long getId() {
-        return id;
+    public Tarefa(Tarefa tarefa) {
+        //TODO Auto-generated constructor stub
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId_tarefa() {
+        return id_tarefa;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public void setId_tarefa(Long id_tarefa_) {
+        this.id_tarefa = id_tarefa_;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public String getTituloTarefa() {
+        return tituloTarefa;
+    }
+
+    public void setTituloTarefa(String tituloTarefa_) {
+        this.tituloTarefa = tituloTarefa_;
     }
 
     public String getDescricao() {
@@ -73,6 +89,30 @@ public class Tarefa {
 
     public void setDataConclusao(LocalDateTime dataConclusao) {
         this.dataConclusao = dataConclusao;
+    }
+
+    public StatusTarefa getStatusTarefa() {
+        return statusTarefa;
+    }
+
+    public void setStatusTarefa(StatusTarefa statusTarefa_) {
+        this.statusTarefa = statusTarefa_;
+    }
+
+    public Integer getPrioridade() {
+        return prioridade;
+    }
+
+    public void setPrioridade(Integer prioridade) {
+        this.prioridade = prioridade;
+    }
+
+    public LocalDateTime getDataVencimento() {
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(LocalDateTime dataVencimento) {
+        this.dataVencimento = dataVencimento;
     }
 
     public Usuario getUsuario() {

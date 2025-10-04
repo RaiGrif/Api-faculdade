@@ -1,10 +1,12 @@
 package com.eniac.projeto.agendaeducacional.DTO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.eniac.projeto.agendaeducacional.entity.Caderno;
 import com.eniac.projeto.agendaeducacional.entity.Categoria;
+import com.eniac.projeto.agendaeducacional.entity.Imagem;
 import com.eniac.projeto.agendaeducacional.entity.StatusCaderno;
 
 public class CadernoDetalheDto {
@@ -15,6 +17,7 @@ public class CadernoDetalheDto {
     private List<String> categorias;
     private LocalDateTime dataCriacaoCaderno;
     private LocalDateTime ultima_atualizacao;
+    private List<Imagem> imagens = new ArrayList<>();
 
     public CadernoDetalheDto (Caderno caderno) {
         this.id_caderno = caderno.getId_caderno();
@@ -27,6 +30,7 @@ public class CadernoDetalheDto {
                                  .toList();
         this.dataCriacaoCaderno = caderno.getData_criacao_caderno();
         this.ultima_atualizacao = caderno.getUltima_atualizacao();
+        this.imagens = caderno.getImagens();
     }
 
     public Long getId_caderno() {

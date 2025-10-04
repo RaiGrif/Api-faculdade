@@ -1,8 +1,10 @@
 package com.eniac.projeto.agendaeducacional.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
@@ -17,6 +19,9 @@ public class Usuario {
     private String email;
     private String senha;
     private LocalDateTime data_cadastro;
+    
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Imagem fotoPerfil;
 
     public Long getId() {
         return id;

@@ -34,7 +34,7 @@ public class CadernoService {
     }
 
     public Caderno create(Caderno caderno, Long id_usuario) {
-        Usuario usuario = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrao"));
+        Usuario usuario = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         caderno.setUsuario(usuario);
         return cadernoRepository.save(caderno);
     }
