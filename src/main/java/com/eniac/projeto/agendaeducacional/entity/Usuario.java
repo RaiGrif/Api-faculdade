@@ -1,10 +1,12 @@
 package com.eniac.projeto.agendaeducacional.entity;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
@@ -15,13 +17,38 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "senha", nullable = false)
     private String senha;
-    private LocalDateTime data_cadastro;
+
+    private LocalDateTime dataCadastro;
+
+    @PrePersist
+    public void PrePersist() {
+        if (dataCadastro == null){
+            dataCadastro = LocalDateTime.now();
+        }
+    }
     
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Imagem fotoPerfil;
+
+    public Usuario(Usuario usuario) {
+        this.id = usuario.getId();
+        this.username = usuario.getUsername();
+        this.email = usuario.getEmail();
+        this.senha = usuario.getSenha();
+        this.fotoPerfil = usuario.getFotoPerfil();
+        this.dataCadastro = usuario.getDataCadastro();
+    }
+
+    public Usuario () {}
 
     public Long getId() {
         return id;
@@ -47,11 +74,17 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    public LocalDateTime getData_cadastro() {
-        return data_cadastro;
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
     }
-    public void setData_cadastro(LocalDateTime data_cadastro) {
-        this.data_cadastro = data_cadastro;
+    public void setDataCadastro(LocalDateTime dataCadastro_) {
+        this.dataCadastro = dataCadastro_;
+    }
+    public Imagem getFotoPerfil() {
+        return fotoPerfil;
+    }
+    public void setFotoPerfil(Imagem fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 
     

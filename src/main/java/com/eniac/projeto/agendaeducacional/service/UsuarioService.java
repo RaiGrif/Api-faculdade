@@ -1,5 +1,7 @@
 package com.eniac.projeto.agendaeducacional.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.eniac.projeto.agendaeducacional.entity.Usuario;
@@ -23,9 +25,15 @@ public class UsuarioService {
     } 
     
 
-    public String update (Usuario usuario) {
-        try{ 
-            usuarioRepository.save(usuario);
+    public String update (Usuario usuario, Long id_usuario) {
+        try{
+            Usuario usuarioExistente = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+            
+            usuarioExistente.setUsername(usuario.getUsername());
+            usuarioExistente.setEmail(usuario.getEmail());
+            usuarioExistente.setSenha(usuario.getSenha());
+            
+            usuarioRepository.save(usuarioExistente);
             return "Usuário atualizado com sucesso";
         } catch (Exception erro) {
             return "Erro: " + erro.getMessage() + " ao tentar atualizar úsuario" ;
@@ -33,14 +41,15 @@ public class UsuarioService {
     }
 
     public String delete(Long id){
-        if (id != null) {
-        try{ 
+        try{
             usuarioRepository.deleteById(id);
-            return "Usuário apagado com sucesso";
+            return "O usuario foi deletado";
         } catch (Exception erro) {
-            return "Erro: " + erro.getMessage() + " ao tentar apagar úsuario" ;
+            return "O usuario não foi deletado";
         }
-        }
-        return "Necessita de um id para deletar";
     }
+
+    public Optional<Usuario> buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
+        }
 }
