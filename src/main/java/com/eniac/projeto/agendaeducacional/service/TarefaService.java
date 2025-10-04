@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.eniac.projeto.agendaeducacional.entity.StatusTarefa;
 import com.eniac.projeto.agendaeducacional.entity.Tarefa;
@@ -12,6 +13,7 @@ import com.eniac.projeto.agendaeducacional.entity.Usuario;
 import com.eniac.projeto.agendaeducacional.repository.TarefaRepository;
 import com.eniac.projeto.agendaeducacional.repository.UsuarioRepository;
 
+@Service
 public class TarefaService {
     private UsuarioRepository usuarioRepository;
     private TarefaRepository tarefaRepository;
@@ -66,11 +68,11 @@ public class TarefaService {
 
         List<Tarefa> tarefas;
 
-        if (statusTarefa != null && prioridade >= 0 && prioridade < 3 ) {
+        if (statusTarefa != null && prioridade > 0 && prioridade < 3 ) {
             tarefas = tarefaRepository.findByStatusTarefaAndPrioridade(statusTarefa, prioridade, sort);
         } else if (statusTarefa != null) {
             tarefas = tarefaRepository.findByStatusTarefa(statusTarefa);
-        } else if (prioridade >= 0 && prioridade < 3 ) {
+        } else if (prioridade > 0) {
             tarefas = tarefaRepository.findByPrioridade(prioridade);
         } else {
             tarefas = tarefaRepository.findAll(sort);

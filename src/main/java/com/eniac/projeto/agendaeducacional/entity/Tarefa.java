@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Column;
 import java.time.LocalDateTime;
 
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_tarefa;
+    private Long id;
 
     @Column(name = "tituloTarefa",nullable = false)
     private String tituloTarefa;
@@ -27,6 +28,13 @@ public class Tarefa {
 
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
+
+    @PrePersist
+    public void PrePersist() {
+        if (dataCriacao == null){
+            dataCriacao = LocalDateTime.now();
+        }
+    }
 
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
@@ -46,17 +54,27 @@ public class Tarefa {
     private Usuario usuario;
 
     // Getters and Setters
+    public Tarefa(){}
+
 
     public Tarefa(Tarefa tarefa) {
-        //TODO Auto-generated constructor stub
+        this.id = tarefa.getId();
+        this.tituloTarefa = tarefa.getTituloTarefa();
+        this.descricao = tarefa.getDescricao();
+        this.statusTarefa = tarefa.getStatusTarefa();
+        this.dataConclusao = tarefa.getDataConclusao();
+        this.dataCriacao = tarefa.getDataCriacao();
+        this.dataVencimento = tarefa.getDataVencimento();
+        this.usuario = tarefa.getUsuario();
+        this.prioridade = tarefa.getPrioridade();
     }
 
-    public Long getId_tarefa() {
-        return id_tarefa;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_tarefa(Long id_tarefa_) {
-        this.id_tarefa = id_tarefa_;
+    public void setId(Long id_) {
+        this.id = id_;
     }
 
     public String getTituloTarefa() {
