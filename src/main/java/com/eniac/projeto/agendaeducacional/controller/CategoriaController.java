@@ -28,23 +28,23 @@ public class CategoriaController {
         }
 
         @GetMapping
-        public List<Categoria> getMethodName(Categoria categoria) {
+        public List<Categoria> get(Categoria categoria) {
             return categoriaService.list();
         }
 
         @PostMapping
         public List<Categoria> create (@RequestBody Categoria categoria) {
-            return categoriaService.create(categoria);
+            return categoriaService.create(categoria.getUsuario().getId(),categoria);
         }      
 
-        @PutMapping
-        public List<Categoria> putMethodName(@RequestBody Categoria categoria) {
-            return categoriaService.update(categoria);
+        @PutMapping("{id}")
+        public List<Categoria> update(@PathVariable("id") Long id,@RequestBody Categoria categoria) {
+            return categoriaService.update(id, categoria);
         }
 
-        @DeleteMapping("{ID}")
-        List<Categoria> delete (@PathVariable("ID") Long id){
-            return delete(id);
+        @DeleteMapping("{id}")
+        List<Categoria> delete (@PathVariable("id") Long id){
+            return categoriaService.deleteById(id);
         }
         
 }

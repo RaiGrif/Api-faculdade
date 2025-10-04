@@ -6,33 +6,58 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.eniac.projeto.agendaeducacional.entity.Categoria;
+import com.eniac.projeto.agendaeducacional.entity.Usuario;
 import com.eniac.projeto.agendaeducacional.repository.CategoriaRepository;
+import com.eniac.projeto.agendaeducacional.repository.UsuarioRepository;
 
 @Service
 public class CategoriaService {
+    private final UsuarioRepository usuarioRepository;
     private CategoriaRepository categoriaRepository;
 
-    public CategoriaService (CategoriaRepository categoriaRepository_) {
+    public CategoriaService (CategoriaRepository categoriaRepository_, UsuarioRepository usuarioRepository_, UsuarioRepository usuarioRepository) {
         this.categoriaRepository = categoriaRepository_;
+        this.usuarioRepository = usuarioRepository_;
     }
 
-    public List<Categoria> create(Categoria categoria){
+    public List<Categoria> create(Long id_usuario,Categoria categoria){
+        Usuario usuario = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrao"));
+        categoria.setUsuario(usuario);
         categoriaRepository.save(categoria);
         return list();
     }
 
     public List<Categoria> list() {
-        Sort sort = Sort.by(Sort.Direction.DESC, "data_criacao_categoria");
+        Sort sort = Sort.by(Sort.Direction.DESC, "dataCriacaoCategoria");
         return categoriaRepository.findAll(sort);
     }
 
-    public List<Categoria> update(Categoria categoria){
-        categoriaRepository.save(categoria);
+    public List<Categoria> update(Long id,Categoria categoria){
+        try {
+        Categoria categoriaExistente = categoriaRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Categoria não encontrado"));
+
+        // Atualiza apenas os campos que podem mudar
+        categoriaExistente.setNome_categoria(categoria.getNome_categoria());;
+        categoriaExistente.setCor(categoria.getCor());;
+        categoriaExistente.setCadernos(categoria.getCadernos());
+        
+        categoriaRepository.save(categoriaExistente);
         return list();
+    } catch (Exception e) {
+        e.printStackTrace(); // 
+        return list();
+    }
+        
     }
 
     public List<Categoria> deleteById(Long id){
+        try{
         categoriaRepository.deleteById(id);
         return list();
+        } catch (Exception erro) {
+            return list();
+        }
+        
     }
 }

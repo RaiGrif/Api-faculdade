@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,10 +27,17 @@ public class Categoria {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario id_Usuario;
+    private Usuario usuario;
 
     @Column(name = "data_criacao_categoria", nullable = false)
-    private LocalDateTime data_criacao_categoria;
+    private LocalDateTime dataCriacaoCategoria;
+
+    @PrePersist
+    public void PrePersist() {
+        if (dataCriacaoCategoria == null){
+            dataCriacaoCategoria = LocalDateTime.now();
+        }
+    }
 
     @Column(name = "cor", nullable = false)
     private String cor;
@@ -67,20 +75,20 @@ public class Categoria {
         this.nomeCategoria = nome_categoria;
     }
 
-    public Usuario getId_Usuario() {
-        return id_Usuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setId_Usuario(Usuario id_Usuario) {
-        this.id_Usuario = id_Usuario;
+    public void setUsuario(Usuario usuario_) {
+        this.usuario = usuario_;
     }
 
     public LocalDateTime getData_criacao_categoria() {
-        return data_criacao_categoria;
+        return dataCriacaoCategoria;
     }
 
     public void setData_criacao_categoria(LocalDateTime data_criacao_categoria) {
-        this.data_criacao_categoria = data_criacao_categoria;
+        this.dataCriacaoCategoria = data_criacao_categoria;
     }
 
     public String getCor() {
