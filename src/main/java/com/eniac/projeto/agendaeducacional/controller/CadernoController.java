@@ -66,8 +66,8 @@ public class CadernoController {
     }
 
     @PutMapping("/{idCaderno}/categorias")
-    public ResponseEntity<Caderno> updateCategorias(@PathVariable("idCaderno") Long id_caderno, @RequestBody List<CategoriaRequest> categoriasRequest) {
-        return cadernoService.atualizarCategorias(id_caderno, categoriasRequest);
+    public ResponseEntity<Caderno> updateCategorias(@PathVariable("idCaderno") Long idCaderno, @RequestBody List<CategoriaRequest> categoriasRequest) {
+        return cadernoService.atualizarCategorias(idCaderno, categoriasRequest);
     }
 
     @DeleteMapping("/{id}")

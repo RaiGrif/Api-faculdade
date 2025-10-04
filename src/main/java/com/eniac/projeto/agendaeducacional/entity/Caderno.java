@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -66,6 +68,7 @@ public class Caderno {
         joinColumns = @JoinColumn(name ="id_caderno"),
         inverseJoinColumns = @JoinColumn(name = "id_categoria")
     )
+    
     private List<Categoria> categorias = new ArrayList<>();
 
     public List<Categoria> getCategorias() {

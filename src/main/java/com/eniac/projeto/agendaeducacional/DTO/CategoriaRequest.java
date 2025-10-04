@@ -3,6 +3,7 @@ package com.eniac.projeto.agendaeducacional.DTO;
 public class CategoriaRequest {
     private Long id;
     private String nome;
+    
     public Long getId() {
         return id;
     }
