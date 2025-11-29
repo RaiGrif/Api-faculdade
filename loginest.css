@@ -1,0 +1,128 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", sans-serif; }
+.container {
+width: 100%;
+max-width: 1800px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 90px;
+}
+
+
+.left h1 { font-size: 4rem; font-weight: 1000; margin-bottom: 5px; color: white; }
+.left p { font-size: 1.1rem; opacity: 0.8; color: #e5e5e5; }
+
+
+.right {
+width: 800px;
+background: #313131d0;
+backdrop-filter: blur(6px);
+border-radius: 23px;
+padding: 50px;
+color: white;
+display: flex;
+flex-direction: column;
+gap: 14px;
+margin-right: 4px;
+}
+
+
+.logo { width: 60px; margin-bottom: 10px; }
+
+
+.right h2 { font-size: 1.8rem; margin-bottom: 15px; }
+
+
+label { font-size: 0.9rem; margin-top: 10px; }
+
+
+input {
+width: 100%;
+padding: 12px;
+border-radius: 12px;
+border: none;
+margin-top: 5px;
+background: #111;
+color: rgb(255, 255, 255);
+font-size: 1rem;
+}
+
+
+.buttons {
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+}
+
+
+button {
+padding: 12px 26px;
+border-radius: 20px;
+border: none;
+cursor: pointer;
+font-size: 1rem;
+font-weight: 600;
+transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+
+button:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+
+
+.criar { background: #0055ff; color: white; }
+.entrar { background: #0077ff; color: rgb(255, 255, 255); }
+.entrar:hover {
+opacity: 0.9;
+}
+
+body {
+background: linear-gradient(230deg, #BDDAFF, #6D96F6, #131FB1);
+background-attachment: fixed;
+position: relative;
+}
+body::before {
+content: "";
+position: absolute;
+inset: 0;
+background: url('noise.png.png');
+opacity: .18;
+pointer-events: none;
+}
+
+
+.container {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 120px;
+padding: 60px;
+height: 100vh;
+}
+
+
+.left {
+max-width: 420px;
+color: white;
+margin-top: -160px;
+}
+
+
+.right {
+width: 520px;
+background: rgba(50, 50, 50, .92);
+backdrop-filter: blur(6px);
+border-radius: 26px;
+padding: 55px;
+color: white;
+}
+
+button {
+transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+button:hover {
+transform: translateY(-3px) scale(1.03);
+box-shadow: 0 8px 20px rgba(0, 102, 255, .35);
+}

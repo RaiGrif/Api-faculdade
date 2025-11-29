@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mindora Dashboard</title>
+  <link rel="stylesheet" href="stylezero.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <img src="logoM.png" alt="logo" class="logo">
+
+    <nav class="menu" aria-label="Menu principal">
+      <button class="menu-item home active" aria-label="Início"></button>
+      <button class="menu-item calendar" aria-label="Calendário"></button>
+      <button class="menu-item notes" aria-label="Notas"></button>
+      <button class="menu-item list" aria-label="Listas"></button>
+      <button class="menu-item user" aria-label="Perfil"></button>
+    </nav>
+  </aside>
+
+  <main class="content" role="main">
+    <h2 class="welcome">Bom dia, adriana.</h2>
+
+    <div class="wrapper">
+
+      <section class="card tarefas" aria-labelledby="tarefas-title">
+        <h3 id="tarefas-title" class="title">Tarefas</h3>
+
+        <div class="task">
+          <div class="check done" aria-hidden="true">
+            <img class="check-icon" src="concluido.png" alt="feito">
+          </div>
+          <div class="task-info">
+            <strong>Organizar documentos</strong>
+            <span class="date">18/12/2025 - 18/11/2025</span>
+          </div>
+          <span class="tag medium">Desenvolvimento</span>
+        </div>
+
+        <div class="task">
+          <div class="check done" aria-hidden="true">
+            <img class="check-icon" src="concluido.png" alt="feito">
+          </div>
+          <div class="task-info">
+            <strong>Organizar cadernos</strong>
+            <span class="date">24/11/2025 - 22/12/2025</span>
+          </div>
+          <span class="tag high">Importante</span>
+        </div>
+
+        <div class="task">
+          <div class="check" aria-hidden="true">
+            <img class="check-icon" src="check-circle.png" alt="">
+          </div>
+          <div class="task-info">
+            <strong>Criar rascunho / protótipo</strong>
+            <span class="date">24/11/2025 - 22/12/2025</span>
+          </div>
+          <span class="tag high">Importante</span>
+        </div>
+
+        <div class="task">
+          <div class="check" aria-hidden="true">
+            <img class="check-icon" src="check-circle.png" alt="">
+          </div>
+          <div class="task-info">
+            <strong>Rascunhar ideia - Mindora</strong>
+            <span class="date">24/11/2025 - 22/12/2025</span>
+          </div>
+          <span class="tag medium">Desenvolvimento</span>
+        </div>
+
+        <div class="task">
+          <div class="check" aria-hidden="true">
+            <img class="check-icon" src="check-circle.png" alt="">
+          </div>
+          <div class="task-info">
+            <strong>Atualizar ideias</strong>
+            <span class="date">24/11/2025 - 22/12/2025</span>
+          </div>
+          <span class="tag high">Importante</span>
+        </div>
+      </section>
+
+      <section class="card cadernos" aria-labelledby="cadernos-title">
+        <h3 id="cadernos-title" class="title">Cadernos recentes</h3>
+
+        <div class="notebooks" role="list">
+
+          <div class="notebook black" role="listitem">
+            <img class="notebook-cover" src="caderno_preto.png" alt="Capa caderno Angular">
+            <span>Angular - aula 2</span>
+            <small>3 dias atrás</small>
+          </div>
+
+          <div class="notebook darkblue" role="listitem">
+            <img class="notebook-cover" src="caderno_azul_escuro.png" alt="Capa caderno">
+            <span>Caderno sem título</span>
+            <small>3 dias atrás</small>
+          </div>
+
+          <div class="notebook blue" role="listitem">
+            <img class="notebook-cover" src="caderno_azul.png" alt="Capa caderno">
+            <span>Caderno sem título</span>
+            <small>3 dias atrás</small>
+          </div>
+
+          <div class="notebook darkblue" role="listitem">
+            <img class="notebook-cover" src="caderno_azul.png" alt="Capa caderno">
+            <span>Caderno sem título</span>
+            <small>3 dias atrás</small>
+          </div>
+        </div>
+
+        <button class="novo" aria-label="Criar caderno">Novo +</button>
+      </section>
+
+      <section class="card calendario" aria-labelledby="calendario-title">
+        <h3 id="calendario-title" class="title">Calendário</h3>
+
+        <div class="calendar-grid" role="list">
+
+          <div class="day selected" role="listitem">
+            <span class="weekday">Segunda</span>
+            <strong class="number">19</strong>
+            <div class="event"><span class="time">17:00</span> <span>Organizar Documentos</span></div>
+          </div>
+
+          <div class="day" role="listitem"><span class="weekday">Terça</span><strong class="number">20</strong></div>
+          <div class="day" role="listitem"><span class="weekday">Quarta</span><strong class="number">21</strong></div>
+          <div class="day" role="listitem"><span class="weekday">Quinta</span><strong class="number">22</strong></div>
+          <div class="day" role="listitem"><span class="weekday">Sexta</span><strong class="number">23</strong></div>
+          <div class="day" role="listitem"><span class="weekday">Sábado</span><strong class="number">24</strong></div>
+          <div class="day" role="listitem"><span class="weekday">Domingo</span><strong class="number">25</strong></div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+</body>
+</html>

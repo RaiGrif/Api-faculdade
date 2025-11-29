@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cadernos — App</title>
+  <link rel="stylesheet" href="estiloedtcaderno.css">
+</head>
+<body>
+  <div class="container">
+
+    <aside class="sidebar">
+      <img src="logoM.png" class="logo" alt="logo">
+
+      <nav class="menu">
+        <button class="menu-item home" aria-label="Início"></button>
+        <button class="menu-item calendar" aria-label="Calendário"></button>
+        <button class="menu-item notes" aria-label="Notas"></button>
+        <button class="menu-item list" aria-label="Listas"></button>
+        <button class="menu-item user" aria-label="Perfil"></button>
+      </nav>
+    </aside>
+
+    <main class="main">
+
+      <header class="top-bar">
+        <h1 class="title">Cadernos</h1>
+        <div class="actions">
+          <button class="btn delete">Excluir</button>
+          <button class="btn save">Salvar</button>
+        </div>
+      </header>
+
+      <section class="editor-area">
+        <div class="editor" contenteditable="true" aria-label="Editor de texto"></div>
+      </section>
+
+      <div class="toolbar" role="toolbar" aria-label="Barra de formatação">
+        <button class="tool align-left"></button>
+        <button class="tool align-center"></button>
+        <button class="tool align-right"></button>
+        <button class="tool align-justify"></button>
+
+        <button class="tool bold"></button>
+        <button class="tool italic"></button>
+        <button class="tool underline"></button>
+
+        <button class="tool color"></button>
+        <button class="tool bullet"></button>
+        <button class="tool size"></button>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    document.querySelector('.editor').addEventListener('keydown', function(e){
+      if(e.key === 'Tab'){
+        e.preventDefault();
+      }
+    });
+  </script>
+
+</body>
+</html>
