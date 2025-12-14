@@ -24,7 +24,7 @@ public class Usuario {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "senha", nullable = false)
+    @Column(name = "senha", nullable = false, unique = true)
     private String senha;
 
     private LocalDateTime dataCadastro;

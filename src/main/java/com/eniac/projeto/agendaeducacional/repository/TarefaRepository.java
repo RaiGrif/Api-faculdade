@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
-    List<Tarefa> findByStatusTarefa(StatusTarefa statusTarefa);
-    List<Tarefa> findByPrioridade(int prioridade);
-    List<Tarefa> findByStatusTarefaAndPrioridade(StatusTarefa statusTarefa, int prioridade, Sort sort);
+    List<Tarefa> findByUsuarioIdAndStatusTarefa(Long idUsuario,StatusTarefa statusTarefa);
+    List<Tarefa> findByUsuarioIdAndPrioridade(Long id,int prioridade);
+    List<Tarefa> findByUsuarioIdAndStatusTarefaAndPrioridade(Long id,StatusTarefa statusTarefa, int prioridade, Sort sort);
+    List<Tarefa> findByUsuarioId(Long idUsuario, Sort sort);
 }

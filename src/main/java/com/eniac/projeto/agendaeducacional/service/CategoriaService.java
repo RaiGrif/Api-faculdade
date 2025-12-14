@@ -24,12 +24,11 @@ public class CategoriaService {
         Usuario usuario = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrao"));
         categoria.setUsuario(usuario);
         categoriaRepository.save(categoria);
-        return list();
+        return list(id_usuario);
     }
 
-    public List<Categoria> list() {
-        Sort sort = Sort.by(Sort.Direction.DESC, "dataCriacaoCategoria");
-        return categoriaRepository.findAll(sort);
+    public List<Categoria> list(Long id) {
+        return categoriaRepository.findAllByUsuarioIdOrderByNomeCategoriaAsc(id);
     }
 
     public List<Categoria> update(Long id,Categoria categoria){
@@ -43,10 +42,10 @@ public class CategoriaService {
         categoriaExistente.setCadernos(categoria.getCadernos());
         
         categoriaRepository.save(categoriaExistente);
-        return list();
+        return list(id);
     } catch (Exception e) {
         e.printStackTrace(); // 
-        return list();
+        return list(id);
     }
         
     }
@@ -54,9 +53,9 @@ public class CategoriaService {
     public List<Categoria> deleteById(Long id){
         try{
         categoriaRepository.deleteById(id);
-        return list();
+        return list(id);
         } catch (Exception erro) {
-            return list();
+            return list(id);
         }
         
     }

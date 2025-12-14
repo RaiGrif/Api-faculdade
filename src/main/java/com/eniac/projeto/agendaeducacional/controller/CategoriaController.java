@@ -8,6 +8,7 @@ import com.eniac.projeto.agendaeducacional.service.CategoriaService;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 
-
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {
@@ -27,9 +28,9 @@ public class CategoriaController {
             this.categoriaService = categoriaService_;
         }
 
-        @GetMapping
-        public List<Categoria> get(Categoria categoria) {
-            return categoriaService.list();
+        @GetMapping("{id}")
+        public List<Categoria> get(@PathVariable("id") Long id) {
+            return categoriaService.list(id);
         }
 
         @PostMapping

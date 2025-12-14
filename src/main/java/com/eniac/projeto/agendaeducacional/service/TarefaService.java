@@ -57,7 +57,7 @@ public class TarefaService {
         return tarefaRepository.findAll(sort);
     }
 
-    public List<Tarefa> list(StatusTarefa statusTarefa, List<String> sortBy, String direction, int prioridade) {
+    public List<Tarefa> list(Long idUsuario,StatusTarefa statusTarefa, List<String> sortBy, String direction, int prioridade) {
         Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         if (sortBy == null || sortBy.isEmpty()) {
@@ -69,13 +69,13 @@ public class TarefaService {
         List<Tarefa> tarefas;
 
         if (statusTarefa != null && prioridade > 0 && prioridade < 3 ) {
-            tarefas = tarefaRepository.findByStatusTarefaAndPrioridade(statusTarefa, prioridade, sort);
+            tarefas = tarefaRepository.findByUsuarioIdAndStatusTarefaAndPrioridade(idUsuario,statusTarefa, prioridade, sort);
         } else if (statusTarefa != null) {
-            tarefas = tarefaRepository.findByStatusTarefa(statusTarefa);
+            tarefas = tarefaRepository.findByUsuarioIdAndStatusTarefa(idUsuario,statusTarefa);
         } else if (prioridade > 0) {
-            tarefas = tarefaRepository.findByPrioridade(prioridade);
+            tarefas = tarefaRepository.findByUsuarioIdAndPrioridade(idUsuario,prioridade);
         } else {
-            tarefas = tarefaRepository.findAll(sort);
+            tarefas = tarefaRepository.findByUsuarioId(idUsuario, sort);
         }
 
         return tarefas;

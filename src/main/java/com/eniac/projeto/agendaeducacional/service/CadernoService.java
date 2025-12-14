@@ -90,7 +90,7 @@ public class CadernoService {
         return cadernoRepository.findAll(sort);
     }
 
-    public List<CadernoDTO> list(StatusCaderno statusCaderno, List<String> sortBy, String direction, String nome_categoria) {
+    public List<CadernoDTO> list(Long idUsuario,StatusCaderno statusCaderno, List<String> sortBy, String direction, String nome_categoria) {
 
         Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -103,13 +103,15 @@ public class CadernoService {
         List<Caderno> cadernos;
 
         if (statusCaderno != null && nome_categoria != null) {
-            cadernos = cadernoRepository.findByStatusCadernoAndCategoriasNomeCategoria(statusCaderno, nome_categoria, sort);
+            cadernos = cadernoRepository.findByUsuarioIdAndStatusCadernoAndCategoriasNomeCategoria(
+                        idUsuario, statusCaderno, nome_categoria, sort
+                );
         } else if (statusCaderno != null) {
-            cadernos = cadernoRepository.findByStatusCaderno(statusCaderno, sort);
+            cadernos = cadernoRepository.findByUsuarioIdAndStatusCaderno(idUsuario,statusCaderno, sort);
         } else if (nome_categoria != null) {
-            cadernos = cadernoRepository.findByCategoriasNomeCategoria(nome_categoria, sort );
+            cadernos = cadernoRepository.findByUsuarioIdAndCategoriasNomeCategoria(idUsuario,nome_categoria, sort );
         } else {
-            cadernos = cadernoRepository.findAll(sort);
+            cadernos = cadernoRepository.findByUsuarioId(idUsuario,sort);
         }
 
         return cadernos.stream().map(CadernoDTO::new).toList();

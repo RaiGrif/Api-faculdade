@@ -3,6 +3,7 @@ package com.eniac.projeto.agendaeducacional.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 
-
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/cadernos")
 public class CadernoController {
@@ -33,8 +34,8 @@ public class CadernoController {
         this.cadernoService = cadernoService_;
     }
 
-    @GetMapping
-    List<CadernoDTO> listarCadernos(@RequestParam(name="statusCaderno",required = false) String statusCaderno, @RequestParam(required = false, name = "sortBy") List<String> sortBy, @RequestParam(defaultValue = "asc", name = "direction") String direction, @RequestParam(required = false, name="nomeCategoria") String nomeCategoria) {
+    @GetMapping("/usuario/{idUsuario}")
+    List<CadernoDTO> listarCadernos(@RequestParam(name="statusCaderno",required = false) String statusCaderno, @RequestParam(required = false, name = "sortBy") List<String> sortBy, @RequestParam(defaultValue = "asc", name = "direction") String direction, @RequestParam(required = false, name="nomeCategoria") String nomeCategoria, @PathVariable("idUsuario") Long id) {
         
         String sortDirection = direction.equalsIgnoreCase("desc") ? "desc" : "asc";
         
@@ -46,7 +47,7 @@ public class CadernoController {
             // opcional: lançar exceção personalizada ou ignorar
         }
     }   
-        return cadernoService.list(statusEnum, sortBy, sortDirection, nomeCategoria);
+        return cadernoService.list( id ,statusEnum, sortBy, sortDirection, nomeCategoria);
     }
 
     @GetMapping("/{id}")
@@ -57,7 +58,8 @@ public class CadernoController {
 
     @PostMapping
     public Caderno create (@RequestBody Caderno caderno) {
-        return cadernoService.create(caderno, caderno.getUsuario().getId());
+       Caderno salvo = cadernoService.create(caderno, caderno.getUsuario().getId());
+        return salvo;
     }
 
     @PutMapping("/{id}")
