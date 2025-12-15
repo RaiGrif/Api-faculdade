@@ -1,6 +1,8 @@
 package com.eniac.projeto.agendaeducacional.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,8 +101,10 @@ public class TarefaService {
 
     public List<Tarefa> buscarPorUsuarioEMes(Long idUsuario, int ano, int mes, StatusTarefa statusTarefa, Integer prioridade) {
 
-        LocalDate inicio = LocalDate.of(ano, mes+1, 1);
-        LocalDate fim = inicio.withDayOfMonth(inicio.lengthOfMonth());
+        YearMonth ym = YearMonth.of(ano, mes);
+
+        LocalDateTime inicio = ym.atDay(1).atStartOfDay();
+        LocalDateTime fim = ym.atEndOfMonth().atTime(23, 59, 59);
 
          if (prioridade != null) {
             return tarefaRepository

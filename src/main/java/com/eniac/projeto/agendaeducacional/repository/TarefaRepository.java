@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
@@ -18,15 +19,15 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     List<Tarefa> findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaOrderByDataVencimentoAscPrioridadeDesc(
             Long usuarioId,
-            LocalDate inicio,
-            LocalDate fim,
+            LocalDateTime inicio,
+            LocalDateTime fim,
             StatusTarefa statusTarefa
     );
 
     List<Tarefa> findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaAndPrioridadeOrderByDataVencimentoAscPrioridadeDesc(
             Long usuarioId,
-            LocalDate inicio,
-            LocalDate fim,
+            LocalDateTime inicio,
+            LocalDateTime fim,
             StatusTarefa statusTarefa,
             int prioridade
     );
