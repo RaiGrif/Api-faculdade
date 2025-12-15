@@ -30,17 +30,20 @@ public class TarefaController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    List<Tarefa> listarTarefas(@RequestParam(required = false,name = "statusTarefa") String statusTarefa, @RequestParam(required = false ,name = "sortBy") List<String> sortBy, @RequestParam(defaultValue = "asc",name = "direction") String direction, @RequestParam(required = false ,name = "prioridade", defaultValue = "0") int prioridade, @PathVariable("idUsuario") Long id) {
+    List<Tarefa> listarTarefas(@RequestParam(required = false,name = "statusTarefa") String statusTarefa, @RequestParam(required = false ,name = "sortBy") List<String> sortBy, @RequestParam(defaultValue = "asc",name = "direction") String direction, @RequestParam(required = false ,name = "prioridade") Integer prioridade, @PathVariable("idUsuario") Long id, @RequestParam(required = false, name = "ano") Integer ano, @RequestParam(required = false, name = "mes") Integer mes) {
         
         String sortDirection = direction.equalsIgnoreCase("desc") ? "desc" : "asc";
 
-        StatusTarefa statusEnum = null;
+        StatusTarefa statusEnum = StatusTarefa.PENDENTE;
         if (statusTarefa != null) {
             try {
                 statusEnum = StatusTarefa.valueOf(statusTarefa.toUpperCase());
             } catch (IllegalArgumentException e) {
                 // opcional : lançar exceção
             }
+        }
+        if (ano != null && mes != null) {
+            return tarefaService.buscarPorUsuarioEMes(id, ano, mes, statusEnum, prioridade);
         }
         return tarefaService.list(id,statusEnum, sortBy, sortDirection, prioridade);
     }

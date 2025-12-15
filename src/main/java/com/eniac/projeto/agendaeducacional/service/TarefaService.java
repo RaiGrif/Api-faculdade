@@ -1,5 +1,6 @@
 package com.eniac.projeto.agendaeducacional.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +58,7 @@ public class TarefaService {
         return tarefaRepository.findAll(sort);
     }
 
-    public List<Tarefa> list(Long idUsuario,StatusTarefa statusTarefa, List<String> sortBy, String direction, int prioridade) {
+    public List<Tarefa> list(Long idUsuario,StatusTarefa statusTarefa, List<String> sortBy, String direction, Integer prioridade) {
         Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         if (sortBy == null || sortBy.isEmpty()) {
@@ -68,11 +69,13 @@ public class TarefaService {
 
         List<Tarefa> tarefas;
 
-        if (statusTarefa != null && prioridade > 0 && prioridade < 3 ) {
+        boolean prioridadeValida = prioridade != null && prioridade > 0 && prioridade < 3;
+
+        if (statusTarefa != null && prioridadeValida ) {
             tarefas = tarefaRepository.findByUsuarioIdAndStatusTarefaAndPrioridade(idUsuario,statusTarefa, prioridade, sort);
         } else if (statusTarefa != null) {
             tarefas = tarefaRepository.findByUsuarioIdAndStatusTarefa(idUsuario,statusTarefa);
-        } else if (prioridade > 0) {
+        } else if (prioridadeValida) {
             tarefas = tarefaRepository.findByUsuarioIdAndPrioridade(idUsuario,prioridade);
         } else {
             tarefas = tarefaRepository.findByUsuarioId(idUsuario, sort);
@@ -92,5 +95,23 @@ public class TarefaService {
 
     public Optional<Tarefa> buscarPorId(Long id) {
           return tarefaRepository.findById(id);
+    }
+
+    public List<Tarefa> buscarPorUsuarioEMes(Long idUsuario, int ano, int mes, StatusTarefa statusTarefa, Integer prioridade) {
+
+        LocalDate inicio = LocalDate.of(ano, mes+1, 1);
+        LocalDate fim = inicio.withDayOfMonth(inicio.lengthOfMonth());
+
+         if (prioridade != null) {
+            return tarefaRepository
+                .findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaAndPrioridadeOrderByDataVencimentoAscPrioridadeDesc(
+                        idUsuario, inicio, fim, statusTarefa, prioridade
+                );
+    }
+
+    return tarefaRepository
+            .findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaOrderByDataVencimentoAscPrioridadeDesc(
+                    idUsuario, inicio, fim, statusTarefa
+            );
     }
 }

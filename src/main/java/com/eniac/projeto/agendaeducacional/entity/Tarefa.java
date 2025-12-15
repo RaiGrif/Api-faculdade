@@ -44,7 +44,7 @@ public class Tarefa {
     private StatusTarefa statusTarefa;
 
     @Column(nullable = false)
-    private int prioridade;
+    private Integer prioridade;
 
     @Column(name = "data_vencimento")
     private LocalDateTime dataVencimento;
