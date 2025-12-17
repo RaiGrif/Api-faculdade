@@ -43,7 +43,11 @@ public class TarefaService {
             tarefaExistente.setPrioridade(tarefa.getPrioridade());
             tarefaExistente.setStatusTarefa(tarefa.getStatusTarefa());
             tarefaExistente.setDataVencimento(tarefa.getDataVencimento());
-            tarefaExistente.setDataConclusao(tarefa.getDataConclusao());
+            if (tarefa.getStatusTarefa() == StatusTarefa.REALIZADO) {
+                tarefaExistente.setDataConclusao(LocalDateTime.now());
+            } else {
+                tarefaExistente.setDataConclusao(null);
+            }
             tarefaExistente.setUsuario(tarefa.getUsuario());
 
             tarefaRepository.save(tarefaExistente);
@@ -105,17 +109,31 @@ public class TarefaService {
 
         LocalDateTime inicio = ym.atDay(1).atStartOfDay();
         LocalDateTime fim = ym.atEndOfMonth().atTime(23, 59, 59);
+        
+         if (statusTarefa != null && prioridade != null) {
+        return tarefaRepository
+            .findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaAndPrioridadeOrderByDataVencimentoAscPrioridadeDesc(
+                idUsuario, inicio, fim, statusTarefa, prioridade
+            );
+        }
+
+        if (statusTarefa != null) {
+        return tarefaRepository
+            .findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaOrderByDataVencimentoAscPrioridadeDesc(
+                idUsuario, inicio, fim, statusTarefa
+            );
+        }
 
          if (prioridade != null) {
             return tarefaRepository
-                .findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaAndPrioridadeOrderByDataVencimentoAscPrioridadeDesc(
-                        idUsuario, inicio, fim, statusTarefa, prioridade
-                );
+                .findByUsuarioIdAndDataVencimentoBetweenAndPrioridadeOrderByDataVencimentoAscPrioridadeDesc(
+                idUsuario, inicio, fim, prioridade
+            );
     }
 
     return tarefaRepository
-            .findByUsuarioIdAndDataVencimentoBetweenAndStatusTarefaOrderByDataVencimentoAscPrioridadeDesc(
-                    idUsuario, inicio, fim, statusTarefa
-            );
+            .findByUsuarioIdAndDataVencimentoBetweenOrderByDataVencimentoAscPrioridadeDesc(
+            idUsuario, inicio, fim
+        );
     }
 }

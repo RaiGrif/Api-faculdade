@@ -31,4 +31,17 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
             StatusTarefa statusTarefa,
             int prioridade
     );
+
+    List<Tarefa> findByUsuarioIdAndDataVencimentoBetweenOrderByDataVencimentoAscPrioridadeDesc(
+        Long usuarioId,
+        LocalDateTime inicio,
+        LocalDateTime fim
+        );
+
+        List<Tarefa> findByUsuarioIdAndDataVencimentoBetweenAndPrioridadeOrderByDataVencimentoAscPrioridadeDesc(
+        Long usuarioId,
+        LocalDateTime inicio,
+        LocalDateTime fim,
+        int prioridade
+        );
 }

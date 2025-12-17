@@ -34,8 +34,8 @@ public class TarefaController {
         
         String sortDirection = direction.equalsIgnoreCase("desc") ? "desc" : "asc";
 
-        StatusTarefa statusEnum = StatusTarefa.PENDENTE;
-        if (statusTarefa != null) {
+        StatusTarefa statusEnum = null;
+        if (statusTarefa != null && !statusTarefa.isEmpty()) {
             try {
                 statusEnum = StatusTarefa.valueOf(statusTarefa.toUpperCase());
             } catch (IllegalArgumentException e) {
