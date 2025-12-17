@@ -1,7 +1,11 @@
 package com.eniac.projeto.agendaeducacional.service;
 
+import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.eniac.projeto.agendaeducacional.DTO.UsuarioDTO;
 import com.eniac.projeto.agendaeducacional.entity.Usuario;
 import com.eniac.projeto.agendaeducacional.repository.UsuarioRepository;
 
@@ -13,19 +17,25 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository_;
     }
 
-    public String create(Usuario usuario ) {
+    public Optional<Usuario> create(Usuario usuario ) {
         try{ 
             usuarioRepository.save(usuario);
-            return "Usuário adicionado com sucesso";
+            return usuarioRepository.findByEmail(usuario.getEmail().toString());
         } catch (Exception erro) {
-            return "Erro: " + erro.getMessage() + " ao tentar adicionar úsuario" ;
+            return null ;
         }
     } 
     
 
-    public String update (Usuario usuario) {
-        try{ 
-            usuarioRepository.save(usuario);
+    public String update (Usuario usuario, Long id_usuario) {
+        try{
+            Usuario usuarioExistente = usuarioRepository.findById(id_usuario).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+            
+            usuarioExistente.setUsername(usuario.getUsername());
+            usuarioExistente.setEmail(usuario.getEmail());
+            usuarioExistente.setSenha(usuario.getSenha());
+            
+            usuarioRepository.save(usuarioExistente);
             return "Usuário atualizado com sucesso";
         } catch (Exception erro) {
             return "Erro: " + erro.getMessage() + " ao tentar atualizar úsuario" ;
@@ -33,14 +43,32 @@ public class UsuarioService {
     }
 
     public String delete(Long id){
-        if (id != null) {
-        try{ 
+        try{
             usuarioRepository.deleteById(id);
-            return "Usuário apagado com sucesso";
+            return "O usuario foi deletado";
         } catch (Exception erro) {
-            return "Erro: " + erro.getMessage() + " ao tentar apagar úsuario" ;
+            return "O usuario não foi deletado";
         }
-        }
-        return "Necessita de um id para deletar";
     }
+
+    public Optional<Usuario> buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
+        }
+
+    public Long buscarEmailESenha(UsuarioDTO usuarioDTO) {
+         Optional<Usuario> optUsuario =
+        usuarioRepository.findByEmail(usuarioDTO.getEmail());
+
+    if (optUsuario.isEmpty()) {
+        return null;
+    }
+
+    Usuario usuario = optUsuario.get();
+
+    if (!usuario.getSenha().equals(usuarioDTO.getSenha())) {
+        return null;
+    }
+
+    return usuario.getId();
+}
 }
